@@ -12,7 +12,7 @@ class Dbh {
 		
 		//$this->servername = "192.168.1.8,1433";
 		//$this->username = "sa";
-		$this->servername = "localhost";
+		$this->servername = "127.0.0.1";
 		$this->username = "root";
 		$this->password = "";
 		$this->dbname = "finance";
