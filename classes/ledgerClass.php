@@ -2,29 +2,33 @@
 	
 	class GL extends Dbh {
 
-		public function ledger($category, $year, $month){
+		public function ledger($category){
+			$statement = $this->connect()->query("SELECT * FROM account_title Where Category = '$category' Order by Account_no");			while($row = $statement->fetch(PDO::FETCH_ASSOC)){
+				$final_Bal=0;
+				$totaldebit = 0;
+				$totalcredit = 0;
 
-			if ($year == null){
-                  $sort1 = "";
-                  $sort2 = "";
-            }elseif ($month == null){
-                  $sort1 = "and YEAR(date_of_transaction) = '".$year."'";
-                  $sort2 = "";      
-            }
-            else{
-                  $sort1 = "and YEAR(date_of_transaction) = '".$year."'";
-                  $sort2 = " and MONTH(date_of_transaction) = '".$month."'";
-            }
-			
-			$statement = $this->connect()->query("SELECT * FROM finance_coa Where category = '$category' Order by account_no");			
-			while($row = $statement->fetch(PDO::FETCH_ASSOC)){
-				$statement1 = $this->connect()->query("SELECT SUM(amount) as 'Total' FROM finance_entries where debit = '$row[account_id]' and status = 'Inserted' ".$sort1.$sort2);
-				$total = $statement1->fetch(PDO::FETCH_ASSOC);
-				$totaldebit = $total['Total'];
-					
-				$statement2 = $this->connect()->query("SELECT SUM(amount) as 'Total' FROM finance_entries where credit = '$row[account_id]' and status = 'Inserted'".$sort1.$sort2);
-				$total = $statement2->fetch(PDO::FETCH_ASSOC);
-				$totalcredit = $total['Total'];
+				$statement2 = $this->connect()->query("SELECT * FROM debit where acc_no='$row[Account_no]'");
+					while($row1 = $statement2->fetch(PDO::FETCH_ASSOC)){
+						$statement3 = $this->connect()->query("SELECT * FROM entry where e_id = '$row1[entry_id]'");
+						while($row2 = $statement3->fetch(PDO::FETCH_ASSOC)){
+							$statement4 = $this->connect()->query("SELECT SUM(amout) as 'Total' FROM debit where entry_id = '$row2[e_id]'");
+							$total = $statement4->fetch(PDO::FETCH_ASSOC);
+							$totaldebit = $totaldebit + $total['Total'];
+
+						}
+					}
+
+				$statement5 = $this->connect()->query("SELECT * FROM credit where acc_no='$row[Account_no]'");
+					while($row3 = $statement5->fetch(PDO::FETCH_ASSOC)){
+						$statement6 = $this->connect()->query("SELECT * FROM entry where e_id = '$row3[entry_id]'");
+						while($row4 = $statement6->fetch(PDO::FETCH_ASSOC)){
+							$statement7 = $this->connect()->query("SELECT SUM(amout) as 'Total' FROM credit where entry_id = '$row4[e_id]'");
+							$total = $statement7->fetch(PDO::FETCH_ASSOC);
+							$totalcredit = $totalcredit + $total['Total'];
+
+						}
+					}
 
 
 				$bal = $totaldebit - $totalcredit;
@@ -42,8 +46,8 @@
 
   				echo'<div row class="col-12 bg-light rounded shadow" style="color: #6c757d; margin-top: 10px;">
 			<div class="row col-12" style="font-weight: bold; color: #003366;">
-				<div align="center" class="col-10">'.$row['account_title'].'</div>
-				<div class="col-2">'.$row['account_no'].'</div>
+				<div align="center" class="col-10">'.$row['Accoutnt_title'].'</div>
+				<div class="col-2">'.$row['Account_no'].'</div>
 			</div>
 			<div class="row">
 			<div class="col-6 border-right border-top-0" style="border-color: #6c757d;">
@@ -59,17 +63,20 @@
 						</tr>
 					</thead>
 					<tbody>';
-					$stmt1 = $this->connect()->query("SELECT * FROM finance_entries where debit = '$row[account_id]' and status = 'Inserted' ".$sort1.$sort2." Order by date_of_transaction");
-						while($row4 = $stmt1->fetch(PDO::FETCH_ASSOC)){
-
+						$stmt = $this->connect()->query("SELECT * FROM debit where acc_no = '$row[Account_no]'");
+						while($debits = $stmt->fetch(PDO::FETCH_ASSOC)){
+							$stmt1 = $this->connect()->query("SELECT * FROM entry where e_id = '$debits[entry_id]'");
+							while($row4 = $stmt1->fetch(PDO::FETCH_ASSOC)){
+								$stmt2 = $this->connect()->query("SELECT * From debit where entry_id = '$row4[e_id]'");
+								$dbrow = $stmt2->fetch(PDO::FETCH_ASSOC);
 						echo'<tr>
-							<td class="border-right" align="left">'.$row4['date_of_transaction'].'</td>
-							<td class="border-right" align="left">'.$row4['description'].'</td>
-							<td class="border-right" align="left">₱ '.number_format($row4["amount"]).'</td>
+							<td class="border-right" align="left">'.$row4['transaction_date'].'</td>
+							<td class="border-right" align="left">'.$row4['Description'].'</td>
+							<td class="border-right" align="left">₱ '.$dbrow['amout'].'</td>
 						</tr>';
 
 							}
-						
+						}
 				echo'</tbody>
 				</table>
 			</div>
@@ -87,16 +94,21 @@
 					</thead>
 					<tbody>';
 
-					$stmt4 = $this->connect()->query("SELECT * FROM finance_entries where credit = '$row[account_id]' and status = 'Inserted' ".$sort1.$sort2." Order by date_of_transaction");
-						while($row3 = $stmt4->fetch(PDO::FETCH_ASSOC)){
+
+						$stmt3 = $this->connect()->query("SELECT * FROM credit where acc_no = '$row[Account_no]'");
+						while($credits = $stmt3->fetch(PDO::FETCH_ASSOC)){
+							$stmt4 = $this->connect()->query("SELECT * FROM entry where e_id = '$credits[entry_id]'");
+							while($row3 = $stmt4->fetch(PDO::FETCH_ASSOC)){
+								$stmt5 = $this->connect()->query("SELECT * From credit where entry_id = '$row3[e_id]'");
+								$crrow = $stmt5->fetch(PDO::FETCH_ASSOC);
 
 							echo'<tr>
-								<td class="border" align="left">'.$row3['date_of_transaction'].'</td>
-								<td class="border" align="left">'.$row3['description'].'</td>
-								<td class="border" align="left">₱ '.number_format($row3["amount"]).'</td>
+								<td class="border" align="left">'.$row3['transaction_date'].'</td>
+								<td class="border" align="left">'.$row3['Description'].'</td>
+								<td class="border" align="left">₱ '.$crrow['amout'].'</td>
 							</tr>';
   							}
-						
+						}
 
 				echo'</tbody>
 				</table>
@@ -104,13 +116,13 @@
 			</div>
 			<div class="row">
 			<div class="col-3">Total</div>
-			<div class="col-3">₱ '.number_format($totaldebit).'</div>
+			<div class="col-3">₱ '.$totaldebit.'</div>
 			<div class="col-3">Total</div>
-			<div class="col-3">₱ '.number_format($totalcredit).'</div>
+			<div class="col-3">₱ '.$totalcredit.'</div>
 			</div>
 			<div class="row">
 			<div class="col-6" align="right"><b><i>'.$mark.' Balance:</i></b></div>
-			<div class="col-6" align="center"><b><i>₱ '.number_format($final_Bal).'</i></b></div>
+			<div class="col-6" align="center"><b><i>₱ '.$final_Bal.'</i></b></div>
 			</div>
 		</div>';
 

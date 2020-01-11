@@ -9,20 +9,15 @@ class Dbh {
 	private $charset;
 
 	public function connect(){
-		
-		//$this->servername = "192.168.1.8,1433";
-		//$this->username = "sa";
-		$this->servername = "db4free.net:3306";
-		$this->username = "finance_gl";
-		$this->password = "finance12345";
-		$this->dbname = "finance_gl";
-
+		$this->servername = "localhost";
+		$this->username = "root";
+		$this->password = "";
+		$this->dbname = "generalledger";
+		$this->charset = "utf8mb4";
 
 		try {
-			//MSSQL
-			//$dsn = "sqlsrv:Server=".$this->servername.";database=".$this->dbname;
-			//MYSQL
-			$dsn = "mysql:host=".$this->servername.";dbname=".$this->dbname;
+
+			$dsn = "mysql:host=".$this->servername.";dbname=".$this->dbname.";charset=".$this->charset;
 			$pdo = new PDO($dsn, $this->username, $this->password);
 			$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 			return $pdo;

@@ -1,4 +1,5 @@
 <!----Navigation---->
+
 <nav class="navigation navbar navbar-expand-lg navbar-dark shadow-sm">
   <a class="navbar-brand" href="index.php"><h4 class="mt-2"><img src="images/logo.png"> Skyline Hotel and Restaurant</h4></a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -9,25 +10,23 @@
     <ul class="navbar-nav mr-auto">
     </ul>
     <span class="account mr-3 mt-2">
-		  <div class="dropdown">
-		    <button class=" btn btn-outline-info btn-sm border-0 text-white rounded-pill" type="button" data-toggle="dropdown" data-hover="dropdown">
-		      <h6 class="mt-2 mr-2"><img class="rounded-circle mr-1" src="images/sampleimg.jpeg" width="30" height="30"> Welcome, <?php echo $_SESSION['name']; ?> </h6>
-		    </button>
-		    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-		      <a class="dropdown-item" href="#"><i class="fas fa-user-cog"></i> Account Profile</a>
-		      <a class="dropdown-item" href="logout.php"><i class="fas fa-sign-out-alt"></i> Logout</a>
-		    </div>
-		  </div>	
-    </span>
-
-    <span class="hr mr-3">	
-    </span>
-
+		<div class="dropdown">
+		  <button class=" btn btn-outline-info btn-sm border-0 text-white rounded-pill" type="button" data-toggle="dropdown" data-hover="dropdown">
+		    <h6 class="mt-2 mr-2"><img class="rounded-circle mr-1" src="images/sampleimg.jpeg" width="30" height="30"> Welcome, Administrator! <h6>
+		  </button>
+		  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+		    <a class="dropdown-item" href="#"><i class="fas fa-user-cog"></i> Account Profile</a>
+		    <a class="dropdown-item" href="#"><i class="fas fa-sign-out-alt"></i> Logout</a>
+		  </div>
+		</div>	
+	</span>
+	<span class="hr mr-3">		
+	</span>
     <span class="mt-2 mr-3">
     	<div class="btn-group">
 			  <a href="" class="notif btn btn-outline-info btn-sm border-0 text-white rounded-pill" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-toggle="tooltip" data-placement="top" title="Notification"><i class="far fa-bell"></i></a>
 			  <div class="dropdown-menu dropdown-menu-right shadow-sm">
-			  	<span class="dropdown-item-text"><i class="far fa-bell"></i> Notification</span>
+			  	<span class="dropdown-item-text"><i class="far fa-bell"></i> Notification <a href="" class="float-right text-primary">Clear All</a></span>
 			  	<div class="dropdown-divider"></div>
 				  <a class="dropdown-item text-dark" href="#">Procurement sent you a budget request</a>
 				  <div class="dropdown-divider"></div>
@@ -43,8 +42,8 @@
     </span>
 
   </div>
-
 </nav>
+
 
 <!---Side Navigation Menu-->
 <div class="container-fluid">
@@ -63,7 +62,6 @@
       			<i class="arrow fas fa-chevron-down"></i><label for="B"><i class="fas fa-border-all"></i> General Ledger</label>
 
       			<ul>
-              <li><a href="Entries.php" style="padding: 0; margin-left: 20px;"><i class="fas fa-border-all"></i> New Entries</a></li>
       				<li><a href="journal.php" style="padding: 0; margin-left: 20px;"><i class="fas fa-border-all"></i> General Journal</a></li>
       				<li><a href="ledger.php" style="padding: 0; margin-left: 20px;"><i class="fas fa-border-all"></i> General Ledger Posting</a></li>
       				<li><a href="t_balance.php" style="padding: 0; margin-left: 20px;"><i class="fas fa-border-all"></i> Trial Balance</a></li>
@@ -91,4 +89,5 @@
          
         </div>
       </div>
+
     </div>

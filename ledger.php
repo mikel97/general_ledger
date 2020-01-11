@@ -1,6 +1,7 @@
 <?php
   include'includes/header.php';
   include'includes/navigation.php';
+  include'classes/database.php';
   include'classes/ledgerClass.php';
 ?>
 
@@ -12,40 +13,6 @@
 	  <div class="card-body" style="height: 15cm; overflow: auto;">
 	    <!---insert transaction here--->
 
-	<div class="col-12 row">
-        <?php
-          include'sorting.php';
-        ?>
-
-        <div class="col-4">
-          <form action="pdfClass.php" method="POST">
-            <button class="btn bg-primary text-white" type="submit" name="pdfLedger" color: white; width: 3cm;">
-              <i class="fas fa-download"></i> Save as PDF
-            </button>
-          </form>
-        </div>
-      </div>
-
-	    <?php
-	    	$year = null;
-	    	$month = null;
-        	if (isset($_POST['submit'])) {
-              if ($_POST['submit'] == "All") {
-                $year = null;
-	    		$month = null;
-              }elseif ($_POST['submit'] == "Annual") {
-                $year = $_POST['year'];
-                $month = null;
-              }
-              else{
-                $year = $_POST['year'];
-                $month = $_POST['month'];
-              }
-            }else{
-              	$year = null;
-	    		$month = null;
-            }
-      	?>
 
 	    <!-- ASSET -->
 
@@ -75,7 +42,7 @@
 
 			<?php
 				$ledger = new GL();
-				$ledger->ledger("Asset",$year,$month);
+				$ledger->ledger("Asset");
 
 			?>
 
@@ -107,7 +74,8 @@
 
 		<div class="row col-12 ml-2" id="liabilities" style="padding: 10px;">
 			<?php
-				$ledger->ledger("Liabilities",$year,$month);
+				$ledger1 = new GL();
+				$ledger1->ledger("Liabilities");
 
 			?>
 		</div>
@@ -139,7 +107,8 @@
 
 		<div class="row col-12 ml-2" id="equity" style="padding: 10px;">
 			<?php
-				$ledger->ledger("Equity",$year,$month);
+				$ledger2 = new GL();
+				$ledger2->ledger("Equity");
 
 			?>
 		</div>
@@ -170,7 +139,8 @@
 
 		<div class="row col-12 ml-2" id="income" style="padding: 10px;">
 			<?php
-				$ledger->ledger("Income",$year,$month);
+				$ledger3 = new GL();
+				$ledger3->ledger("Income");
 
 			?>
 		</div>
@@ -201,7 +171,8 @@
 
 		<div class="row col-12 ml-2" id="expense" style="padding: 10px;">
 			<?php
-				$ledger->ledger("Expense",$year,$month);
+				$ledger4 = new GL();
+				$ledger4->ledger("Expense");
 
 			?>
 		</div>
