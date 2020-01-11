@@ -12,10 +12,10 @@ class Dbh {
 		
 		//$this->servername = "192.168.1.8,1433";
 		//$this->username = "sa";
-		$this->servername = "127.0.0.1";
-		$this->username = "root";
-		$this->password = "";
-		$this->dbname = "finance";
+		$this->servername = "db4free.net:3306";
+		$this->username = "finance_gl";
+		$this->password = "finance12345";
+		$this->dbname = "finance_gl";
 
 
 		try {
